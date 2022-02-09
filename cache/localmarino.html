@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Connect2</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/jquery.barCharts.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="container" class="container">
+        <div class="row">
+            <h2>
+                <center>Live Facility Counts</center>
+            </h2>
+        </div>
+        <hr />
+                <div class="row">
+            <form method="POST" target="_self" class="form-inline" id="frmWidget">
+
+                <div class="col-xl-12 col-sm-8 col-md-8">
+                    <div class="form-group form-inline col-xl-12 col-sm-12 col-md-12">
+                        <label for="facility">Select Facility:</label>
+                        <input type="hidden" name="key" id="key" value="2A2BE0D8-DF10-4A48-BEDD-B3BC0CD628E7" />
+                        <input type="hidden" name="type" id="type" value="circle" />
+                        <select class="form-control" id="facility" name="facility" onchange="this.form.submit()">
+                            <option value="All" selected>All</option>
+                                                                                                <option value="364" >Marino Recreation Center</option>
+                                                                    <option value="367" >SquashBusters Center</option>
+                                                                                    </select>
+                    </div>
+                </div>
+
+                                <div class="col-xl-12 col-sm-4 col-md-4">
+                    <div class="form-group form-inline col-xl-12 col-sm-12 col-md-12">
+                        <button type="button" class="btn btn-sm btn-primary pull-right" id="btnSubmit" name="btnSubmit">Refresh Count</button>
+                                            </div>
+                </div>
+            </form>
+        </div>
+        <hr />
+        <div class="row" style="display:block">
+            
+                <div class="col-sm-12 col-md-12">
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Location Count (Circle Chart)</div>
+                            <div class="panel-body">
+                                                                                                                    <div class="col-md-3 col-sm-6">
+                                                <center>
+                                                    <div class="circleChart" data-fcolor="#2A5B84" data-lastcount="54.285714285714" data-percent="54.285714285714" data-isclosed=""></div>
+                                                    <div style="text-align:center;">Marino Center - 2nd Floor<br/><span style="color:green">(Open)</span><br/>Last Count: 57<br/>Updated: 02/09/2022 05:27 PM</div>
+                                                </center>
+                                            </div>
+                                                                                                                            <div class="col-md-3 col-sm-6">
+                                                <center>
+                                                    <div class="circleChart" data-fcolor="#ffc90e" data-lastcount="60" data-percent="60" data-isclosed=""></div>
+                                                    <div style="text-align:center;">Marino Center - Gymnasium<br/><span style="color:green">(Open)</span><br/>Last Count: 36<br/>Updated: 02/09/2022 05:27 PM</div>
+                                                </center>
+                                            </div>
+                                                                                                                            <div class="col-md-3 col-sm-6">
+                                                <center>
+                                                    <div class="circleChart" data-fcolor="#ffc90e" data-lastcount="84.615384615385" data-percent="84.615384615385" data-isclosed=""></div>
+                                                    <div style="text-align:center;">Marino Center - 3rd Floor Weight Room<br/><span style="color:green">(Open)</span><br/>Last Count: 55<br/>Updated: 02/09/2022 05:28 PM</div>
+                                                </center>
+                                            </div>
+                                                                                                                            <div class="col-md-3 col-sm-6">
+                                                <center>
+                                                    <div class="circleChart" data-fcolor="#2A5B84" data-lastcount="31.111111111111" data-percent="31.111111111111" data-isclosed=""></div>
+                                                    <div style="text-align:center;">Marino Center - 3rd Floor Select & Cardio<br/><span style="color:green">(Open)</span><br/>Last Count: 28<br/>Updated: 02/09/2022 05:28 PM</div>
+                                                </center>
+                                            </div>
+                                                                                                                            <div class="col-md-3 col-sm-6">
+                                                <center>
+                                                    <div class="circleChart" data-fcolor="#2A5B84" data-lastcount="35" data-percent="35" data-isclosed=""></div>
+                                                    <div style="text-align:center;">Marino Center - Track<br/><span style="color:green">(Open)</span><br/>Last Count: 7<br/>Updated: 02/09/2022 05:28 PM</div>
+                                                </center>
+                                            </div>
+                                                                                                                            <div class="col-md-3 col-sm-6">
+                                                <center>
+                                                    <div class="circleChart" data-fcolor="#ffc90e" data-lastcount="61.666666666667" data-percent="61.666666666667" data-isclosed=""></div>
+                                                    <div style="text-align:center;">SquashBusters - 4th Floor<br/><span style="color:green">(Open)</span><br/>Last Count: 37<br/>Updated: 02/09/2022 05:27 PM</div>
+                                                </center>
+                                            </div>
+                                                                    </div>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+        
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <center>Powered by <a href="http://www.connect2concepts.com/" target="_blank">Connect2Concepts</a></center>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.circlechart_v1.0.0.js"></script>
+<script src="js/jquery.easing.min.js"></script>
+<script src="js/jquery.barChart.js"></script>
+
+<script>
+    jQuery('.barChart').barChart({
+        easing: 'easeOutQuart'
+    });
+</script>
+<script>
+    var refresh_interval = 1200;
+    $('.circleChart').each(function(value, index) {
+        var fcolor = $(this).data('fcolor');
+        $(this).percentcircle({
+            animate: true,
+            diameter: 100,
+            guage: 3,
+            coverBg: '#fff',
+            bgColor: '#efefef',
+            fillColor: fcolor,
+            percentSize: '18px',
+            percentWeight: 'normal'
+        })
+    });
+    $("#btnSubmit").click(function() {
+        $(this).html("Refreshing.....");
+        $(this).addClass('disabled');
+        $("#frmWidget").submit();
+    });
+    /*setInterval(function() {
+        refresh_interval = refresh_interval - 1;
+        var min = Math.floor(refresh_interval / 60);
+        var seconds = refresh_interval % 60;
+        if (min < 10) {
+            min = "0" + min;
+        }
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        $('#timer').text(min + ':' + seconds);
+        if (refresh_interval == 0) {
+            $("#frmWidget").submit();
+        }
+    }, 1000);*/
+</script>
