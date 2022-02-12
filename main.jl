@@ -1,5 +1,3 @@
-#!/bin/bash
-
 using HTTP
 using Gumbo
 using Cascadia
@@ -25,7 +23,7 @@ using ArgParse
 
 =#
 
-LOCAL_MARINO = "./cache/localmarino.html"
+LOCAL_MARINO = "/"*relpath((@__DIR__)*"/cache/localmarino.html/","/")
 MARINO_URL = "https://connect2concepts.com/connect2/?type=circle&key=2A2BE0D8-DF10-4A48-BEDD-B3BC0CD628E7"
 LOCATION_NAMES = ["sb-4", "m-2", "m-tr", "m-g", "m-wr", "m-3"]
 
@@ -90,7 +88,7 @@ function storeMarinoData(marino_data, password, cert_path)
     # THIS ISSUE WHERE WE NEEDED A SUFFIX TO CONNECT TO MONGODB TOOK LIKE A FEW HOURS TO FIGURE OUT
     suffix = "&tlsCAFile=$cert_path"
     client = Mongoc.Client("mongodb+srv://root:$password@marinobase.vunm9.mongodb.net/umongo?retryWrites=true&w=majority" * suffix)
-    
+     
     database = client["Umongo"]
     @info "Succesfully connected to Umongo ;)"
     collection = database["GymData"]
