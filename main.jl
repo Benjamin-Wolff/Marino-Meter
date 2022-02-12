@@ -64,7 +64,7 @@ function parseMarinoData(path)
         "Marino Center - 3rd Floor Select & Cardio" => "m-3"
     )
 
-    marino_data = Dict()
+    marino_data = []
 
     for loc in locations
         floor_data = loc[1]
@@ -76,8 +76,8 @@ function parseMarinoData(path)
         date = date[2] * " " * date[3] * " " * date[4]
         date_time = DateTime(date, "mm/dd/yyyy I:M p")
 
-        entry = Dict("number" => number, "percent_full" => percent_full, "date_time" => date_time)
-        marino_data[name_conversion[name]] = entry
+        entry = Dict("name" => name_conversion[name], "number" => number, "percent_full" => percent_full, "date_time" => date_time)
+        push!(marino_data, entry)
     end
 
     return marino_data
@@ -87,19 +87,29 @@ end
 function storeMarinoData(marino_data, password, cert_path)
     # THIS ISSUE WHERE WE NEEDED A SUFFIX TO CONNECT TO MONGODB TOOK LIKE A FEW HOURS TO FIGURE OUT
     suffix = "&tlsCAFile=$cert_path"
-    client = Mongoc.Client("mongodb+srv://root:$password@marino-base.vunm9.mongodb.net/marino-base?retryWrites=true&w=majority" * suffix)
+    client = Mongoc.Client("mongodb+srv://root:$password@marino-base.vunm9.mongodb.net/marinobase?retryWrites=true&w=majority" * suffix)
 
-    database = client["Marino-Base"]
-    collection = database["Gym-Data"]
+    database = client["MarinoBase"]
+    collection = database["GymData"]
 
+    for entry in marino_data
+        name = entry["name"]
 
+        bson_filter = Mongoc.BSON("""{ "name" : "$name" }""")
+        bson_options = Mongoc.BSON("""{ "sort" : { "date_time" : -1 } }""")
+        doc = Mongoc.find_one(collection, bson_filter)
 
-    # for entry in marino_data
-    #     document = Mongoc.BSON(entry)
-    #     result = Mongoc.insert_one(collection, document)
-    #     @info "$entry updated to MongoDB with result: $result"
-    # end
+        for d in doc
+            println(d)
+        end
 
+        # pprintln(doc)
+        return
+        #{ name : "sb-4" }{ date_time : -1 }
+        document = Mongoc.BSON(entry)
+        result = Mongoc.insert_one(collection, document)
+        @info "$entry updated to MongoDB with result: $result"
+    end
 
 end
 
@@ -108,9 +118,9 @@ function main()
     getMarinoPage(LOCAL_MARINO)
     marino_data = parseMarinoData(LOCAL_MARINO)
     @info "Marino Data Obtained from the page"
-    # storeMarinoData(marino_data, parsed_args["password"], parsed_args["cert"])
+    storeMarinoData(marino_data, parsed_args["password"], parsed_args["cert"])
 
-    queryTest()
+    #queryTest()
 end
 
 main()
