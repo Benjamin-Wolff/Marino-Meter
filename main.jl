@@ -87,30 +87,30 @@ end
 function storeMarinoData(marino_data, password, cert_path)
     # THIS ISSUE WHERE WE NEEDED A SUFFIX TO CONNECT TO MONGODB TOOK LIKE A FEW HOURS TO FIGURE OUT
     suffix = "&tlsCAFile=$cert_path"
-    client = Mongoc.Client("mongodb+srv://root:$password@marino-base.vunm9.mongodb.net/marinobase?retryWrites=true&w=majority" * suffix)
-
-    database = client["MarinoBase"]
+    client = Mongoc.Client("mongodb+srv://root:$password@marinobase.vunm9.mongodb.net/umongo?retryWrites=true&w=majority" * suffix)
+    
+    database = client["Umongo"]
+    @info "Succesfully connected to Umongo ;)"
     collection = database["GymData"]
 
     for entry in marino_data
         name = entry["name"]
-
+        new_date = entry["date_time"]
         bson_filter = Mongoc.BSON("""{ "name" : "$name" }""")
         bson_options = Mongoc.BSON("""{ "sort" : { "date_time" : -1 } }""")
-        doc = Mongoc.find_one(collection, bson_filter)
-
-        for d in doc
-            println(d)
+        doc = Mongoc.find_one(collection, bson_filter, options=bson_options)
+        
+        doc_date = nothing
+        if !isnothing(doc)
+            doc_date = doc["date_time"]
         end
 
-        # pprintln(doc)
-        return
-        #{ name : "sb-4" }{ date_time : -1 }
-        document = Mongoc.BSON(entry)
-        result = Mongoc.insert_one(collection, document)
-        @info "$entry updated to MongoDB with result: $result"
+        if isnothing(doc) || new_date > doc_date 
+            document = Mongoc.BSON(entry)
+            result = Mongoc.insert_one(collection, document)
+            @info "New member inserted into Umongo with result: $result"   
+        end     
     end
-
 end
 
 function main()
