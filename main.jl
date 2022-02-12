@@ -1,3 +1,5 @@
+#!/usr/bin/env julia
+
 using HTTP
 using Gumbo
 using Cascadia
