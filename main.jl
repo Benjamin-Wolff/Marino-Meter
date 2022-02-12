@@ -1,4 +1,4 @@
-#!/usr/bin/env julia
+#!/bin/bash
 
 using HTTP
 using Gumbo
